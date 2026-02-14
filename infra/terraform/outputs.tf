@@ -1,4 +1,11 @@
-# outputs.tf
+################################################################################
+# CloudFront Outputs
+################################################################################
+
+output "frontend_cloudfront_url" {
+  description = "URL da distribuição CloudFront do front-end"
+  value       = aws_cloudfront_distribution.frontend.domain_name
+}
 
 ################################################################################
 # EKS Outputs
