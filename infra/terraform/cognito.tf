@@ -1,6 +1,6 @@
 
 resource "aws_cognito_user_pool" "default" {
-	name                = "soat-user-pool"
+	name                = "soat-user-pool-${var.environment}"
 	username_attributes = ["email"]
 	auto_verified_attributes = ["email"]
 	alias_attributes    = ["nickname"]
@@ -33,7 +33,7 @@ resource "aws_cognito_user_pool" "default" {
 }
 
 resource "aws_cognito_user_pool_client" "default" {
-	name         = "soat-user-pool-client"
+	name         = "soat-user-pool-client-${var.environment}"
 	user_pool_id = aws_cognito_user_pool.default.id
 	generate_secret = false
 	allowed_oauth_flows_user_pool_client = true
@@ -47,6 +47,14 @@ resource "aws_cognito_user_pool_client" "default" {
 	prevent_user_existence_errors = true
 	supported_identity_providers = ["COGNITO"]
 
+	callback_urls = [
+		aws_cloudfront_distribution.frontend.domain_name != null ? "https://${aws_cloudfront_distribution.frontend.domain_name}/" : "",
+		aws_cloudfront_distribution.frontend.domain_name != null ? "https://${aws_cloudfront_distribution.frontend.domain_name}/silent-renew.html" : ""
+	]
+	logout_urls = [
+		aws_cloudfront_distribution.frontend.domain_name != null ? "https://${aws_cloudfront_distribution.frontend.domain_name}/" : ""
+	]
+	
 	ui_customization {
 		user_pool_id = aws_cognito_user_pool.default.id
 		client_id    = aws_cognito_user_pool_client.default.id

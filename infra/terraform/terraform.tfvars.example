@@ -10,4 +10,4 @@ sqs_dlq_retention      = 1209600
 sqs_max_receive_count  = 3
 
 # Kubernetes
-kubernetes_namespace = "fastfood"
+kubernetes_namespace = "hackaton"

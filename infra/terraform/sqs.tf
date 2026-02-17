@@ -89,9 +89,9 @@ resource "aws_sqs_queue" "hackaton_soat_processed" {
 # IAM Policy para acesso ao SQS
 ################################################################################
 
-resource "aws_iam_policy" "fastfood_sqs_policy" {
+resource "aws_iam_policy" "hackaton_sqs_policy" {
   name        = "${local.name}-sqs-policy"
-  description = "Policy para acesso às filas SQS do fastfood"
+  description = "Policy para acesso às filas SQS do hackaton"
 
   policy = jsonencode({
     Version = "2012-10-17"

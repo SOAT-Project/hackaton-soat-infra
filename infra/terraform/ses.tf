@@ -1,4 +1,5 @@
 resource "aws_ses_domain_identity" "main" {
+	name   = "ses_domain_identity_${var.environment}"
 	domain = var.ses_domain
 }
 

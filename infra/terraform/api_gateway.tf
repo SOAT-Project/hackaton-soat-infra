@@ -1,6 +1,6 @@
 
 resource "aws_api_gateway_rest_api" "karpenter_api" {
-	name        = "karpenter-api"
+	name        = "karpenter-api-${var.environment}"
 	description = "API Gateway para Karpenter Kubernetes, protegido pelo Cognito"
 }
 
@@ -39,7 +39,7 @@ resource "aws_api_gateway_integration" "karpenter_integration" {
 resource "aws_api_gateway_deployment" "karpenter_deployment" {
 	depends_on = [aws_api_gateway_integration.karpenter_integration]
 	rest_api_id = aws_api_gateway_rest_api.karpenter_api.id
-	stage_name  = "prod"
+	stage_name  = "${var.environment}"
 }
 
 variable "karpenter_url" {
