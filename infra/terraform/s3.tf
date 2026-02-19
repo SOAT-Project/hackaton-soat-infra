@@ -1,16 +1,16 @@
 resource "aws_s3_bucket" "hackaton-soat-web-bucket" {
-	bucket = "soat-hackaton-soat-web-${var.environment}"
+	bucket = "hackaton-soat-web-${var.environment}"
 	acl    = "private"
 
 	tags = {
-		Name        = "soat-hackaton-soat-web-${var.environment}"
+		Name        = "hackaton-soat-web-${var.environment}"
 		Environment = var.environment
 		Project     = "soat"
 	}
 }
 
 resource "aws_s3_bucket_public_access_block" "hackaton-soat-web-bucket" {
-	bucket = aws_s3_bucket.hackaton-soat-web.id
+	bucket = aws_s3_bucket.hackaton-soat-web-bucket.id
 
 	block_public_acls       = true
 	block_public_policy     = true
@@ -19,18 +19,18 @@ resource "aws_s3_bucket_public_access_block" "hackaton-soat-web-bucket" {
 }
 
 resource "aws_s3_bucket" "hackaton-soat-content-bucket" {
-	bucket = "soat-hackaton-soat-content-${var.environment}"
+	bucket = "hackaton-soat-content-bucket-${var.environment}"
 	acl    = "private"
 
 	tags = {
-		Name        = "soat-hackaton-soat-content-${var.environment}"
+		Name        = "hackaton-soat-content-bucket-${var.environment}"
 		Environment = var.environment
 		Project     = "soat"
 	}
 }
 
 resource "aws_s3_bucket_public_access_block" "hackaton-soat-content-bucket" {
-	bucket = aws_s3_bucket.hackaton-soat-content.id
+	bucket = aws_s3_bucket.hackaton-soat-content-bucket.id
 
 	block_public_acls       = true
 	block_public_policy     = true
