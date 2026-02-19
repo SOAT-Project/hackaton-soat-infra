@@ -26,7 +26,7 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  name   = "fastfood-soat-${basename(path.cwd)}"
+  name   = "hackaton-soat-${basename(path.cwd)}"
   region = var.aws_region
 
   vpc_cidr = "10.0.0.0/16"

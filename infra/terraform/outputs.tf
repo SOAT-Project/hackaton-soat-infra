@@ -39,6 +39,45 @@ output "sqs_queue_urls" {
   }
 }
 
+################################################################################
+# Cognito Outputs
+################################################################################
+
+output "cognito_user_pool_id" {
+  description = "ID do Cognito User Pool"
+  value       = aws_cognito_user_pool.default.id
+}
+
+output "cognito_user_pool_arn" {
+  description = "ARN do Cognito User Pool"
+  value       = aws_cognito_user_pool.default.arn
+}
+
+output "cognito_user_pool_client_id" {
+  description = "ID do Cognito User Pool Client"
+  value       = aws_cognito_user_pool_client.default.id
+}
+
+################################################################################
+# API Gateway Outputs
+################################################################################
+
+output "api_gateway_id" {
+  description = "ID do API Gateway"
+  value       = aws_api_gateway_rest_api.karpenter_api.id
+}
+
+output "api_gateway_endpoint" {
+  description = "URL base do API Gateway"
+  value       = aws_api_gateway_deployment.karpenter_deployment.invoke_url
+}
+
+output "api_gateway_authorizer_id" {
+  description = "ID do Cognito Authorizer no API Gateway"
+  value       = aws_api_gateway_authorizer.cognito.id
+}
+}
+
 output "sqs_queue_names" {
   description = "Nomes das filas SQS"
   value = {
@@ -142,4 +181,23 @@ output "order_service_irsa_role_arn" {
 output "order_service_irsa_role_name" {
   description = "Nome da IAM Role do Order Service"
   value       = module.order_service_irsa.iam_role_name
+}
+
+################################################################################
+# SES Outputs
+################################################################################
+
+output "ses_domain_identity_arn" {
+  description = "ARN da identidade de domínio no SES"
+  value       = aws_ses_domain_identity.main.arn
+}
+
+output "ses_email_identity_arn" {
+  description = "ARN da identidade de e-mail no SES"
+  value       = aws_ses_email_identity.main.arn
+}
+
+output "ses_domain_identity_name" {
+  description = "Nome da identidade de domínio no SES"
+  value       = aws_ses_domain_identity.main.domain
 }

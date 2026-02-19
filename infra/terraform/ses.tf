@@ -1,14 +1,5 @@
-variable "ses_domain" {
-	description = "Domínio para verificação no SES"
-	type        = string
-}
-
-variable "ses_email_identity" {
-	description = "E-mail de envio para SES"
-	type        = string
-}
-
 resource "aws_ses_domain_identity" "main" {
+	name   = "ses_domain_identity_${var.environment}"
 	domain = var.ses_domain
 }
 

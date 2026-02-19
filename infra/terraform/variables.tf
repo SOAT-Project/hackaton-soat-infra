@@ -45,7 +45,23 @@ variable "environment" {
 }
 
 variable "kubernetes_namespace" {
-  description = "Namespace do K8s para o fastfood app"
+  description = "Namespace do K8s para o hackaton app"
   type        = string
-  default     = "fastfood"
+  default     = "hackaton"
+}
+
+################################################################################
+# SES Variables
+################################################################################
+
+variable "ses_domain" {
+  description = "Domínio para verificação no SES"
+  type        = string
+  default     = "gmail.com"
+}
+
+variable "ses_email_identity" {
+  description = "E-mail de envio para SES"
+  type        = string
+  default     = "matheus.17.desa@gmail.com"
 }
