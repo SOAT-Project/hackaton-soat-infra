@@ -17,3 +17,23 @@ resource "aws_s3_bucket_public_access_block" "hackaton-soat-web-bucket" {
 	ignore_public_acls      = true
 	restrict_public_buckets = true
 }
+
+resource "aws_s3_bucket" "hackaton-soat-content-bucket" {
+	bucket = "soat-hackaton-soat-content-${var.environment}"
+	acl    = "private"
+
+	tags = {
+		Name        = "soat-hackaton-soat-content-${var.environment}"
+		Environment = var.environment
+		Project     = "soat"
+	}
+}
+
+resource "aws_s3_bucket_public_access_block" "hackaton-soat-content-bucket" {
+	bucket = aws_s3_bucket.hackaton-soat-content.id
+
+	block_public_acls       = true
+	block_public_policy     = true
+	ignore_public_acls      = true
+	restrict_public_buckets = true
+}
