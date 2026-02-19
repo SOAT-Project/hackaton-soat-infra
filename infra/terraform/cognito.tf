@@ -48,11 +48,11 @@ resource "aws_cognito_user_pool_client" "default" {
 	supported_identity_providers = ["COGNITO"]
 
 	callback_urls = [
-		aws_cloudfront_distribution.frontend.domain_name != null ? "https://${aws_cloudfront_distribution.frontend.domain_name}/" : "",
-		aws_cloudfront_distribution.frontend.domain_name != null ? "https://${aws_cloudfront_distribution.frontend.domain_name}/silent-renew.html" : ""
+		"https://${aws_cloudfront_distribution.frontend.domain_name}/",
+		"https://${aws_cloudfront_distribution.frontend.domain_name}/silent-renew.html"
 	]
 	logout_urls = [
-		aws_cloudfront_distribution.frontend.domain_name != null ? "https://${aws_cloudfront_distribution.frontend.domain_name}/" : ""
+		"https://${aws_cloudfront_distribution.frontend.domain_name}/"
 	]
 	
 	ui_customization {
