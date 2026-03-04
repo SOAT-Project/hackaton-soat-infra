@@ -15,8 +15,6 @@ on:
         required: true
       aws-lock-dynamodb-table:
         required: true
-      aws-ses-email-identity:
-        required: true
 
 jobs:
   terraform:
@@ -53,8 +51,7 @@ jobs:
             -backend-config="bucket=${{ secrets.aws-statefile-s3-bucket }}" \
             -backend-config="key=${{ github.event.repository.name }}" \
             -backend-config="region=${{ secrets.aws-region }}" \
-            -backend-config="dynamodb_table=${{ secrets.aws-lock-dynamodb-table }}" \
-            -backend-config="ses_email_identity=${{ secrets.aws-ses-email-identity }}"
+            -backend-config="dynamodb_table=${{ secrets.aws-lock-dynamodb-table }}"
 
       - name: Terraform validate
         run: cd infra/terraform && terraform validate

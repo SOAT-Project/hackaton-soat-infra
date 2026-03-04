@@ -76,7 +76,6 @@ output "api_gateway_authorizer_id" {
   description = "ID do Cognito Authorizer no API Gateway"
   value       = aws_api_gateway_authorizer.cognito.id
 }
-}
 
 output "sqs_queue_names" {
   description = "Nomes das filas SQS"
