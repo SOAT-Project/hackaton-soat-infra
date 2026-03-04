@@ -45,7 +45,6 @@ resource "aws_cognito_user_pool_client" "default" {
 	]
 	supported_identity_providers = ["COGNITO"]
 	prevent_user_existence_errors = true
-	supported_identity_providers = ["COGNITO"]
 
 	callback_urls = [
 		"https://${aws_cloudfront_distribution.frontend.domain_name}/",
