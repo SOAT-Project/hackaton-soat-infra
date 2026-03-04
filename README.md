@@ -7,7 +7,7 @@ Infraestrutura como código para o projeto SOAT Hackathon, utilizando Terraform 
 - **VPC**: Rede isolada para os recursos do projeto.
 - **EKS (Kubernetes)**: Orquestração de containers com integração Karpenter para escalabilidade automática.
 - **Karpenter**: Provisão automática de nós para o cluster EKS.
-- **S3**: Armazenamento de arquivos estáticos e assets do front-end.
+- **S3**: Armazenamento de arquivos estáticos e assets do front-end além dos arquivos da aplicação
 - **CloudFront**: CDN para distribuição global do front-end.
 - **SES**: Envio de e-mails transacionais e de verificação.
 - **SQS**: Filas para processamento assíncrono de mensagens.
@@ -26,17 +26,17 @@ Infraestrutura como código para o projeto SOAT Hackathon, utilizando Terraform 
 1. Configure suas credenciais AWS (ex: via AWS CLI ou variáveis de ambiente).
 2. Copie o arquivo `terraform.tfvars.example` para o ambiente desejado e ajuste os valores.
 3. Inicialize o Terraform:
-	```sh
-	terraform init
-	```
+    ```sh
+    terraform init
+    ```
 4. Selecione o ambiente:
-	```sh
-	terraform workspace select dev # ou hom/prod
-	```
+    ```sh
+    terraform workspace select dev # ou hom/prod
+    ```
 5. Aplique a infraestrutura:
-	```sh
-	terraform apply -var-file=environment/dev/terraform.tfvars
-	```
+    ```sh
+    terraform apply -var-file=environment/dev/terraform.tfvars
+    ```
 
 ## Principais Outputs
 
@@ -61,4 +61,5 @@ Após o apply, consulte os principais endpoints e recursos gerados:
 - AWS CLI configurado
 
 ---
+
 Para dúvidas ou sugestões, abra uma issue neste repositório.
