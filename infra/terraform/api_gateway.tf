@@ -39,7 +39,15 @@ resource "aws_api_gateway_integration" "karpenter_integration" {
 resource "aws_api_gateway_deployment" "karpenter_deployment" {
 	depends_on = [aws_api_gateway_integration.karpenter_integration]
 	rest_api_id = aws_api_gateway_rest_api.karpenter_api.id
-	stage_name  = "${var.environment}"
+	lifecycle {
+		create_before_destroy = true
+	}
+}
+
+resource "aws_api_gateway_stage" "default" {
+  rest_api_id   = aws_api_gateway_rest_api.karpenter_api.id
+  deployment_id = aws_api_gateway_deployment.karpenter_deployment.id
+  stage_name    = var.environment
 }
 
 variable "karpenter_url" {

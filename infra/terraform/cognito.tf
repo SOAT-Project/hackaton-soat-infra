@@ -3,7 +3,6 @@ resource "aws_cognito_user_pool" "default" {
 	name                = "soat-user-pool-${var.environment}"
 	username_attributes = ["email"]
 	auto_verified_attributes = ["email"]
-	alias_attributes    = ["nickname"]
 	mfa_configuration   = "OFF"
 	password_policy {
 		minimum_length    = 8
@@ -44,8 +43,8 @@ resource "aws_cognito_user_pool_client" "default" {
 		"ALLOW_CUSTOM_AUTH"
 	]
 	supported_identity_providers = ["COGNITO"]
-	prevent_user_existence_errors = true
-
+	prevent_user_existence_errors = "ENABLED"
+	
 	callback_urls = [
 		"https://${aws_cloudfront_distribution.frontend.domain_name}/",
 		"https://${aws_cloudfront_distribution.frontend.domain_name}/silent-renew.html"
@@ -53,20 +52,11 @@ resource "aws_cognito_user_pool_client" "default" {
 	logout_urls = [
 		"https://${aws_cloudfront_distribution.frontend.domain_name}/"
 	]
-	
-	ui_customization {
-		user_pool_id = aws_cognito_user_pool.default.id
-		client_id    = aws_cognito_user_pool_client.default.id
-		image_url    = null
-		css = <<CSS
-			body { background-color: #181818; color: #f1f1f1; }
-			input, button { background-color: #222; color: #fff; }
-			a { color: #4f8cff; }
-			@media (prefers-color-scheme: light) {
-				body { background-color: #fff; color: #222; }
-				input, button { background-color: #f1f1f1; color: #222; }
-				a { color: #0056b3; }
-			}
-		CSS
-	}
+}
+
+resource "aws_cognito_user_pool_ui_customization" "default" {
+  user_pool_id = aws_cognito_user_pool.default.id
+  client_id    = aws_cognito_user_pool_client.default.id
+
+  css = file("${path.module}/cognito-ui.css")
 }

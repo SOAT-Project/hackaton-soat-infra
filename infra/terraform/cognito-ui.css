@@ -1,0 +1,31 @@
+body {
+    background-color: #181818;
+    color: #f1f1f1;
+}
+
+input,
+button {
+    background-color: #222;
+    color: #fff;
+}
+
+a {
+    color: #4f8cff;
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: #fff;
+        color: #222;
+    }
+
+    input,
+    button {
+        background-color: #f1f1f1;
+        color: #222;
+    }
+
+    a {
+        color: #0056b3;
+    }
+}
