@@ -69,7 +69,7 @@ output "api_gateway_id" {
 
 output "api_gateway_endpoint" {
   description = "URL base do API Gateway"
-  value       = aws_api_gateway_deployment.karpenter_deployment.invoke_url
+  value       = aws_api_gateway_stage.default.invoke_url
 }
 
 output "api_gateway_authorizer_id" {
@@ -96,46 +96,6 @@ output "sqs_queue_arns" {
     processed_queue_arn = aws_sqs_queue.hackaton_soat_processed.arn
     processed_queue_dlq_arn = aws_sqs_queue.hackaton_soat_processed_dlq.arn
   }
-}
-
-################################################################################
-# RDS Outputs
-################################################################################
-
-output "rds_endpoint" {
-  description = "RDS endpoint (host:port)"
-  value       = aws_db_instance.postgres.endpoint
-}
-
-output "rds_address" {
-  description = "RDS hostname"
-  value       = aws_db_instance.postgres.address
-}
-
-output "rds_port" {
-  description = "RDS port"
-  value       = aws_db_instance.postgres.port
-}
-
-output "rds_database_name" {
-  description = "RDS database name"
-  value       = aws_db_instance.postgres.db_name
-}
-
-output "rds_username" {
-  description = "RDS username"
-  value       = aws_db_instance.postgres.username
-  sensitive   = true
-}
-
-output "rds_secret_arn" {
-  description = "ARN do secret com as credenciais do RDS"
-  value       = aws_secretsmanager_secret.rds_credentials.arn
-}
-
-output "rds_secret_name" {
-  description = "Nome do secret no Secrets Manager"
-  value       = aws_secretsmanager_secret.rds_credentials.name
 }
 
 ################################################################################
@@ -166,20 +126,6 @@ output "aws_region" {
 output "oidc_provider_arn" {
   description = "ARN do OIDC Provider do EKS"
   value       = module.eks.oidc_provider_arn
-}
-
-################################################################################
-# IRSA Outputs
-################################################################################
-
-output "order_service_irsa_role_arn" {
-  description = "ARN da IAM Role do Order Service"
-  value       = module.order_service_irsa.iam_role_arn
-}
-
-output "order_service_irsa_role_name" {
-  description = "Nome da IAM Role do Order Service"
-  value       = module.order_service_irsa.iam_role_name
 }
 
 ################################################################################
