@@ -240,5 +240,5 @@ data "kubernetes_service_v1" "envoy_gateway" {
 }
 
 output "envoy_gateway_lb_hostname" {
-  value = data.kubernetes_service.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname
+  value = data.kubernetes_service_v1.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname
 }
