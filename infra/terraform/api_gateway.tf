@@ -33,7 +33,7 @@ resource "aws_api_gateway_integration" "karpenter_integration" {
     http_method             = aws_api_gateway_method.karpenter_method.http_method
     integration_http_method = "ANY"
     type                    = "HTTP_PROXY"
-    uri                     = "http://${data.kubernetes_service.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname}"
+    uri                     = "http://${data.kubernetes_service_v1.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname}"
     depends_on              = [data.kubernetes_service.envoy_gateway]
 }
 
