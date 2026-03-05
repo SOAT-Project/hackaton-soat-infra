@@ -28,12 +28,13 @@ resource "aws_api_gateway_authorizer" "cognito" {
 }
 
 resource "aws_api_gateway_integration" "karpenter_integration" {
-	rest_api_id             = aws_api_gateway_rest_api.karpenter_api.id
-	resource_id             = aws_api_gateway_resource.karpenter_resource.id
-	http_method             = aws_api_gateway_method.karpenter_method.http_method
-	integration_http_method = "ANY"
-	type                    = "HTTP_PROXY"
-	uri                     = var.karpenter_url
+    rest_api_id             = aws_api_gateway_rest_api.karpenter_api.id
+    resource_id             = aws_api_gateway_resource.karpenter_resource.id
+    http_method             = aws_api_gateway_method.karpenter_method.http_method
+    integration_http_method = "ANY"
+    type                    = "HTTP_PROXY"
+    uri                     = "http://${data.kubernetes_service.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname}"
+    depends_on              = [data.kubernetes_service.envoy_gateway]
 }
 
 resource "aws_api_gateway_deployment" "karpenter_deployment" {
@@ -48,10 +49,5 @@ resource "aws_api_gateway_stage" "default" {
   rest_api_id   = aws_api_gateway_rest_api.karpenter_api.id
   deployment_id = aws_api_gateway_deployment.karpenter_deployment.id
   stage_name    = var.environment
-}
-
-variable "karpenter_url" {
-	description = "URL do endpoint do Karpenter no Kubernetes"
-	type        = string
 }
  

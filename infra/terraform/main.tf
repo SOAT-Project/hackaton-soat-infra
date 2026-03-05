@@ -15,6 +15,18 @@ provider "helm" {
   }
 }
 
+data "kubernetes_service" "envoy_gateway" {
+  metadata {
+    name      = "eg-envoy-gateway"
+    namespace = "envoy-gateway-system"
+  }
+  depends_on = [helm_release.envoy_gateway]
+}
+
+output "envoy_gateway_lb_hostname" {
+  value = data.kubernetes_service.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_availability_zones" "available" {
