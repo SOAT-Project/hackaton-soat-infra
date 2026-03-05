@@ -236,7 +236,10 @@ data "kubernetes_service_v1" "envoy_gateway" {
     name      = "eg-envoy-gateway"
     namespace = "envoy-gateway-system"
   }
-  depends_on = [helm_release.envoy_gateway]
+   depends_on = [
+    helm_release.envoy_gateway,
+    kubectl_manifest.apply_k8s_yaml
+  ]
 }
 
 output "envoy_gateway_lb_hostname" {
