@@ -56,6 +56,11 @@ resource "aws_cognito_user_pool_client" "default" {
 	]
 }
 
+resource "aws_cognito_user_pool_domain" "default" {
+  domain       = "soat-user-pool-${var.environment}"
+  user_pool_id = aws_cognito_user_pool.default.id
+}
+
 resource "aws_cognito_user_pool_ui_customization" "default" {
   user_pool_id = aws_cognito_user_pool.default.id
   client_id    = aws_cognito_user_pool_client.default.id

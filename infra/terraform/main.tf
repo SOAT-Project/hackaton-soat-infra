@@ -10,7 +10,7 @@ provider "helm" {
     exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
-      args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name, "--region", var.aws_region]
+      args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name, "--region", var.aws_region]
     }
   }
 }
@@ -37,6 +37,8 @@ locals {
     GithubRepo = "terraform-aws-eks"
     GithubOrg  = "terraform-aws-modules"
   }
+
+  envoy_dns = try(data.kubernetes_service_v1.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname, "")
 }
 
 ################################################################################
@@ -86,21 +88,21 @@ module "eks" {
     "karpenter.sh/discovery" = local.name
   })
 
-access_entries = {
+  # access_entries = {
 
-    root = {
-      principal_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+  #   admin = {
+  #     principal_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:admin"
 
-      policy_associations = {
-        admin = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-          access_scope = {
-            type = "cluster"
-          }
-        }
-      }
-    }
-  }
+  #     policy_associations = {
+  #       admin = {
+  #         policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  #         access_scope = {
+  #           type = "cluster"
+  #         }
+  #       }
+  #     }
+  #   }
+  # }
 
   tags = local.tags
 }
@@ -231,6 +233,33 @@ resource "kubectl_manifest" "apply_k8s_yaml" {
   depends_on = [helm_release.envoy_gateway]
 }
 
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = [
+      "eks",
+      "get-token",
+      "--cluster-name",
+      module.eks.cluster_name,
+      "--region",
+      var.aws_region
+    ]
+  }
+}
+
+resource "time_sleep" "wait_for_envoy_lb" {
+  depends_on = [
+    helm_release.envoy_gateway,
+    kubectl_manifest.apply_k8s_yaml
+  ]
+
+  create_duration = "300s"
+}
+
 data "kubernetes_service_v1" "envoy_gateway" {
   metadata {
     name      = "eg-envoy-gateway"
@@ -238,10 +267,12 @@ data "kubernetes_service_v1" "envoy_gateway" {
   }
    depends_on = [
     helm_release.envoy_gateway,
-    kubectl_manifest.apply_k8s_yaml
+    kubectl_manifest.apply_k8s_yaml,
+    time_sleep.wait_for_envoy_lb
   ]
 }
 
 output "envoy_gateway_lb_hostname" {
-  value = data.kubernetes_service_v1.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname
+  # Tenta acessar o hostname, se falhar (por ser null), retorna uma string de aviso
+  value = try(data.kubernetes_service_v1.envoy_gateway.status[0].load_balancer[0].ingress[0].hostname, "Pending LoadBalancer DNS...")
 }

@@ -49,34 +49,3 @@ resource "aws_iam_role_policy" "lambda_notify_policy" {
 		]
 	})
 }
-
-resource "aws_lambda_function" "notify" {
-  function_name = "hackaton-soat-notify-${var.environment}"
-  role          = aws_iam_role.hackaton-soat-notification-lambda.arn
-  handler       = "index.handler"
-  runtime       = "nodejs18.x"
-  timeout       = 30
-
-  s3_bucket = aws_s3_bucket.lambda_notification.id
-  s3_key    = "notify/notify.zip"
-
-  lifecycle {
-    ignore_changes = [
-      s3_key,
-      s3_object_version
-    ]
-  }
-
-  environment {
-    variables = {
-      ENVIRONMENT = var.environment
-    }
-  }
-}
-
-resource "aws_lambda_event_source_mapping" "notify_sqs" {
-	event_source_arn = aws_sqs_queue.hackaton_soat_notify.arn
-	function_name    = aws_lambda_function.notify.arn
-	enabled          = true
-	batch_size       = 10
-}
