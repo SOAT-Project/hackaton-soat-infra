@@ -41,7 +41,7 @@ variable "sqs_max_receive_count" {
 variable "environment" {
   description = "Ambiente (dev, staging, prod)"
   type        = string
-  default     = "dev"
+  default     = "prod"
 }
 
 variable "kubernetes_namespace" {
