@@ -117,7 +117,7 @@ resource "aws_iam_policy" "hackaton_soat_manager" {
           "s3:GetObject",
           "s3:PutObject"
         ]
-        Resource = "${aws_s3_bucket.hackaton_soat_web_bucket.arn}/*"
+        Resource = "${aws_s3_bucket.hackaton-soat-content-bucket.arn}/*"
       }
     ]
   })
