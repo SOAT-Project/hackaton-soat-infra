@@ -49,21 +49,17 @@ resource "aws_cognito_user_pool_client" "default" {
 	
 	callback_urls = [
 		"https://${aws_cloudfront_distribution.frontend.domain_name}/",
-		"https://${aws_cloudfront_distribution.frontend.domain_name}/silent-renew.html"
+		"https://${aws_cloudfront_distribution.frontend.domain_name}/silent-renew.html",
+		"http://localhost:3000/",
+		"http://localhost:3000/silent-renew.html"
 	]
 	logout_urls = [
-		"https://${aws_cloudfront_distribution.frontend.domain_name}/"
+		"https://${aws_cloudfront_distribution.frontend.domain_name}/",
+		"http://localhost:3000/"
 	]
 }
 
 resource "aws_cognito_user_pool_domain" "default" {
   domain       = "soat-user-pool-${var.environment}"
   user_pool_id = aws_cognito_user_pool.default.id
-}
-
-resource "aws_cognito_user_pool_ui_customization" "default" {
-  user_pool_id = aws_cognito_user_pool.default.id
-  client_id    = aws_cognito_user_pool_client.default.id
-
-  css = file("${path.module}/cognito-ui.css")
 }
