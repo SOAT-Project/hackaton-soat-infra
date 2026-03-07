@@ -1,31 +1,39 @@
-body {
+/* Fundo principal */
+.banner-customizable {
     background-color: #181818;
+}
+
+/* Labels */
+.label-customizable {
     color: #f1f1f1;
 }
 
-input,
-button {
+/* Texto descritivo */
+.textDescription-customizable {
+    color: #f1f1f1;
+}
+
+/* Campos de entrada */
+.inputField-customizable {
+    background-color: #222;
+    color: #fff;
+    border-color: #444;
+}
+
+/* Botão de submit */
+.submitButton-customizable {
+    background-color: #222;
+    color: #fff;
+    border-color: #444;
+}
+
+/* Botões de social login */
+.socialButton-customizable {
     background-color: #222;
     color: #fff;
 }
 
-a {
-    color: #4f8cff;
-}
-
-@media (prefers-color-scheme: light) {
-    body {
-        background-color: #fff;
-        color: #222;
-    }
-
-    input,
-    button {
-        background-color: #f1f1f1;
-        color: #222;
-    }
-
-    a {
-        color: #0056b3;
-    }
+/* Mensagens de erro */
+.errorMessage-customizable {
+    color: #ff4f4f;
 }
