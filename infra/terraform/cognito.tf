@@ -22,7 +22,7 @@ resource "aws_cognito_user_pool" "default" {
 		allow_admin_create_user_only = false
 	}
 	verification_message_template {
-		email_message = "Clique no link para verificar seu email: {####}"
+		email_message = "Seu código de verificação SOAT é : {####}"
 		email_subject = "Verificação de Email SOAT"
 		sms_message   = "Seu código de verificação SOAT é {####}"
 	}
