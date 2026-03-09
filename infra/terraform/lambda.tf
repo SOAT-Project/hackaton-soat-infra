@@ -45,7 +45,14 @@ resource "aws_iam_role_policy" "lambda_notify_policy" {
 					"ses:SendRawEmail"
 				]
 				Resource = "*"
-			}
+			},
+			{
+				Effect = "Allow"
+				Action = [
+					"cognito-idp:AdminGetUser"
+				]
+				Resource = "*"
+			},
 		]
 	})
 }
