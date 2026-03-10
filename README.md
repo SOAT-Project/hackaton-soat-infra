@@ -1,19 +1,19 @@
 # hackaton-soat-infra
 
-Infraestrutura como código para o projeto SOAT Hackathon, utilizando Terraform e AWS.
+Infraestrutura para o projeto SOAT Hackathon, utilizando Terraform e AWS.
 
 ## Componentes Principais
 
 - **VPC**: Rede isolada para os recursos do projeto.
-- **EKS (Kubernetes)**: Orquestração de containers com integração Karpenter para escalabilidade automática.
+- **EKS (Kubernetes)**: Orquestração de containers com integração ao Karpenter para escalabilidade automática.
 - **Karpenter**: Provisão automática de nós para o cluster EKS.
-- **S3**: Armazenamento de arquivos estáticos e assets do front-end além dos arquivos da aplicação
+- **S3**: Armazenamento do front-end, lambda e arquivos da aplicação.
 - **CloudFront**: CDN para distribuição global do front-end.
-- **SES**: Envio de e-mails transacionais e de verificação.
+- **SES**: Envio de e-mails transacionais e de verificação, pelo Lambda.
 - **SQS**: Filas para processamento assíncrono de mensagens.
 - **DynamoDB**: Banco de dados NoSQL para processamento de dados.
-- **Lambda**: Funções serverless para notificações e processamento.
-- **Cognito**: Autenticação e autorização de usuários, com login por e-mail e nickname opcional.
+- **Lambda**: Funções serverless para notificações via SES.
+- **Cognito**: Autenticação e autorização de usuários, com login por e-mail.
 - **API Gateway**: Exposição de APIs REST protegidas pelo Cognito, integradas ao backend Kubernetes/Karpenter.
 
 ## Estrutura de Pastas
@@ -21,7 +21,7 @@ Infraestrutura como código para o projeto SOAT Hackathon, utilizando Terraform 
 - `infra/terraform/` - Código Terraform dividido por recursos (eks, vpc, s3, cloudfront, cognito, etc).
 - `infra/terraform/environment/` - Variáveis específicas por ambiente (`dev`, `hom`, `prod`).
 
-## Como usar
+## Como usar localmente
 
 1. Configure suas credenciais AWS (ex: via AWS CLI ou variáveis de ambiente).
 2. Copie o arquivo `terraform.tfvars.example` para o ambiente desejado e ajuste os valores.
@@ -51,15 +51,6 @@ Após o apply, consulte os principais endpoints e recursos gerados:
 ## Observações
 
 - Todos os recursos seguem padrão de nomeação `hackaton-soat` para fácil identificação.
-- O Cognito está configurado para login por e-mail, nickname opcional, sem MFA, e página de login customizada (dark/light).
+- O Cognito está configurado para login por e-mail, nickname opcional, sem MFA, e página de login gerenciada pelo Cognito.
 - O API Gateway protege os endpoints usando autenticação Cognito.
 - O Karpenter faz o provisionamento automático de nós para o cluster Kubernetes.
-
-## Requisitos
-
-- Terraform >= 1.3
-- AWS CLI configurado
-
----
-
-Para dúvidas ou sugestões, abra uma issue neste repositório.
